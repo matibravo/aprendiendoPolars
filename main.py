@@ -1,6 +1,8 @@
 import polars as pl
 import datetime as dt
+import time
 
+start = time.time()
 
 df = pl.DataFrame({
     "name": ["juan morales", "hugo sanchez", "paco ruiz", "luis jara"],
@@ -157,3 +159,7 @@ print("------------------------------->")
 print(dataframe_merge)
 print("------------------------------->")
 print(dataframe_concatenado)
+print(f"tiempo: {time.time() - start} segundos")
+
+print(df.describe())
+print(df.schema)

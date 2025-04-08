@@ -1,4 +1,8 @@
+Ticket#201222887 — Investigacion sobre polars para generación microservicio de generación de archivos "csv" con despliegue en entorno Azure Serverless
+
 Polars con python
+
+se requiere migrar reportes que estan en pandas hacia polars y dejarlos depositados en un serverless de azure
 
 instalar polars
 pip install polars 
@@ -25,3 +29,61 @@ df = pl.DataFrame(
 )
 
 print(df)
+
+-------------------------------------------------------------------------------------------------------------------->
+
+El metodo head() por defecto muestra las 5 primeras filas por defecto, pero si indico un numero menor lo hace tambien
+print(df.head(3))
+
+El metodo tail() por defecto muestra las 5 ultimas filas por defecto,  pero si indico un numero menor lo hace tambien
+print(df.tail(3))
+
+el metodo sample trae filas de forma aleatoria, sin ordenar
+print(df.sample(2))
+
+metodo para mapear el dataframe
+print(df.schema)
+
+select puede agregar columnas pero trabaja en el mismo dataframe
+result = df.select(
+    bmi=bmi_expr,
+    avg_bmi=bmi_expr.mean(),
+    ideal_max_bmi=25,
+)
+print(result)
+
+
+with_columns crea un nuevo dataframe desde el original y agrega columnas
+result = df.with_columns(
+    bmi=bmi_expr,
+    avg_bmi=bmi_expr.mean(),
+    ideal_max_bmi=25,
+)
+print(result)
+
+group by siempre va con aggregation
+el resultado se agrupa por decada y se evalua que si la altura es menor 1.7 es como if dentro y lo toma como boolean
+y name son agrupados
+result = df.group_by(
+    (pl.col("birthdate").dt.year() // 10 * 10).alias("decade"),
+    (pl.col("height") < 1.7).alias("short?"),
+).agg(pl.col("name"))
+print(result)
+
+resultado:
+shape: (3, 3)
+┌────────┬────────┬─────────────────────────────────┐
+│ decade ┆ short? ┆ name                            │
+│ ---    ┆ ---    ┆ ---                             │
+│ i32    ┆ bool   ┆ list[str]                       │
+╞════════╪════════╪═════════════════════════════════╡
+│ 1980   ┆ true   ┆ ["Chloe Cooper"]                │
+│ 1990   ┆ true   ┆ ["Alice Archer"]                │
+│ 1980   ┆ false  ┆ ["Ben Brown", "Daniel Donovan"… │
+└────────┴────────┴─────────────────────────────────┘
+
+
+
+s38n11, se encuentra generando los reportes de los clientes de Normaliza BCI y Ripley
+
+https://github.com/e-contact/Extractor-DataMining
