@@ -82,8 +82,17 @@ shape: (3, 3)
 │ 1980   ┆ false  ┆ ["Ben Brown", "Daniel Donovan"… │
 └────────┴────────┴─────────────────────────────────┘
 
+example:
+
+result = df.group_by(
+    (pl.col("birthdate").dt.year() // 10 * 10).alias("decade"),
+    (pl.col("height") < 1.7).alias("short?"),
+).agg(
+    pl.len(),
+    pl.col("height").max().alias("tallest"),
+    pl.col("weight", "height").mean().name.prefix("avg_"),
+)
+print(result)
 
 
-s38n11, se encuentra generando los reportes de los clientes de Normaliza BCI y Ripley
 
-https://github.com/e-contact/Extractor-DataMining
