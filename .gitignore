@@ -1,6 +1,7 @@
 mi_entorno/
 __pycache__/
 *.pyc
+*.csv
 *.pyo
 *.pyd
 *.so
