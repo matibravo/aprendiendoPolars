@@ -22,4 +22,6 @@ try:
     
 except Exception as e:
     print(f"ha ocurrido un error en el tipo de dato contenido en el dataframe: {e}")
+    
+ 
 
